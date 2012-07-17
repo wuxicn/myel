@@ -42,6 +42,7 @@
 ;;
 
 ;;; Changelist:
+;;  2012.7.17, wuxi: fix file-extension match bug.
 ;;
 
 ;;; Code:
@@ -105,6 +106,9 @@ A buffer can go into ctab-blist only if all functions in filter list return t")
   "Old default-value of `header-line-format'.")
 (make-variable-buffer-local 'ctab-old-header)
 
+(defvar ctab-header-ext (list "h" "hpp" "hxx" "h++" "hh")
+  "List of header file extensions")
+
 ;;; Functions:
 
 (defun ctab-default-filter (buffer)
@@ -141,10 +145,11 @@ place next to 'file.h'."
             (setq not-in-list nil)
           ;; else:
           (when (string= name (file-name-sans-extension (buffer-name (car blist))))
-            (if (or (string= ext "h") (string= ext "hh") (string= ext "hpp")
-                    (string= ext "hxx") (string= ext "h++"))
+            (if (member ext ctab-header-ext)
                 ;; buffer is c/c++ header:
-                (setq pos last)
+                (progn
+                  (setq blist nil)
+                  (setq pos last))
               ;; buffer is not c/c++ header:
               (setq pos blist))))
         (setq last blist)
@@ -250,7 +255,7 @@ header-line eg: [5/17]:_ctab.el__worker.h_|worker.cpp|_main.cpp_...
       ;; return the result list: (head-str tail-str begin-offset end-offset)
       (list
        ;; head string: "[i/n]"
-       (propertize (format "[%2d/%2d]:" (1+ index) n) 'face 'ctab-head-face)
+       (propertize (format "[%d/%d]:" (1+ index) n) 'face 'ctab-head-face)
        ;; tail string:
        tail-str
        ;; begin-offset:
