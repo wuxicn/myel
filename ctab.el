@@ -43,6 +43,7 @@
 
 ;;; Changelist:
 ;;  2012.7.17, wuxi: fix file-extension match bug.
+;;  2012.7.24, wuxi: fix header file at beginning bug.
 ;;
 
 ;;; Code:
@@ -133,6 +134,9 @@ place next to 'file.h'."
         (setq ctab-blist-num (1+ ctab-blist-num)))
 
     ;; else:
+    ;; set dummy buffer at begin:
+    (setq ctab-blist (cons (get-buffer "*Messages*") ctab-blist))
+
     (let* ((blist ctab-blist)
            (name (file-name-sans-extension (buffer-name buffer)))
            (ext (downcase (concat "" (file-name-extension (buffer-name buffer)))))
@@ -167,6 +171,10 @@ place next to 'file.h'."
         (setq ctab-blist-num (1+ ctab-blist-num)))
 
       ) ;; end let*
+
+    ;; remove dummy buffer at begin:
+    (setq ctab-blist (cdr ctab-blist))
+
     ) ;; end if
   ) ;; end ctab-tab-list
 
