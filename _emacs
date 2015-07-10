@@ -1,50 +1,69 @@
-;; @file: .emacs
-;; @author: wuxi
-;; @date: 2011.11.19
-;;
+;;; @file: .emacs
+;;; @author: wuxi
+;;; @date: 2015.07.07
+;;;
+;;; CHANGE-LIST:
+;;;   - 2015.07.07, wuxi: create.
+;;;
 
+;;; set my default load-path
 (add-to-list 'load-path "~/.emacs.d")
 
 
-;;; --- color-theme ---
-;;; http://www.nongnu.org/color-theme/
-(require 'color-theme)
-(setq color-theme-is-global t)
-(color-theme-initialize)
-;(color-theme-midnight)
-(color-theme-icoder-dark)
+;;; === Global key bindings: === {{{
+
+(global-set-key (kbd "M-g") 'goto-line)
+
+;;; window and buffer
+(global-set-key (kbd "M-`") 'other-window)
+(global-set-key (kbd "M-o") 'other-window)
+(global-set-key (kbd "M-1") 'delete-other-windows)
+(global-set-key (kbd "M-2") 'split-window-vertically)
+(global-set-key (kbd "M-3") 'split-window-horizontally)
+(global-set-key (kbd "M-0") 'kill-buffer-and-window)
+(global-set-key (kbd "M-4") '(lambda () (interactive) (kill-buffer (current-buffer))))
+(global-set-key (kbd "M-]") 'enlarge-window-horizontally)
+;;(global-set-key (kbd "M-[") 'shrink-window-horizontally)
+(global-set-key (kbd "M-6") 'enlarge-window)
+
+;;; move cursor:
+(global-set-key (kbd "<end>") 'end-of-line)
+(global-set-key (kbd "<home>") 'beginning-of-line)
+(global-set-key (kbd "S-<right>") 'forward-word)
+(global-set-key (kbd "S-<left>") 'backward-word)
+;(global-set-key (kbd "S-<down>") 'scroll-up)
+;(global-set-key (kbd "S-<up>") 'scroll-down)
+(global-set-key (kbd "<mouse-4>") 'previous-line)
+(global-set-key (kbd "<mouse-5>") 'forward-line)
+
+;;; Set mark: S-SPC, M-SPC = C-SPC
+(global-set-key (kbd "C-SPC") 'nil)
+(global-set-key (kbd "M-SPC") 'set-mark-command)
+(global-set-key (kbd "S-SPC") 'set-mark-command)
+
+;;; for ignore ssh auto-translates [backspace] to [Ctrl-h]
+;(global-set-key [?\C-h] 'delete-backward-char)
+(global-set-key [?\C-x ?h] 'help-command)
+
+;;; point-register
+(global-set-key (kbd "M-p") 'point-to-register)
+(global-set-key (kbd "C-j") 'jump-to-register)
+
+;;; for puTTY:
+(global-set-key (kbd "<select>") 'end-of-line)
+
+;;; for Mac
+(when (string= "ns" window-system)
+  ;; (setq mac-option-modifier nil)
+  (setq mac-option-modifier 'meta)
+  (setq mac-option-key-is-meta nil)
+  ;; (setq mac-command-key-is-meta t)
+  ;; (setq mac-command-modifier 'meta)
+  )
+
+;;; Global key binding }}}
 
 
-;;;--------------------------------------------------------------------
-;;; === Language environment === {{{
-(let ((lang (getenv "LANG")) (lc_all (getenv "LC_ALL")))
-  (unless lang (setq lang ""))
-  (unless lc_all (setq lc_all ""))
-  (if (or (string-match "utf-8" (downcase lang))
-          (string-match "utf-8" (downcase lc_all)))
-      ;; UTF-8 settings:
-      (progn
-        (set-language-environment "UTF-8")
-        (set-terminal-coding-system 'utf-8)
-        (set-keyboard-coding-system 'utf-8)
-        (set-clipboard-coding-system 'utf-8)
-        (set-buffer-file-coding-system 'utf-8)
-        (set-selection-coding-system 'utf-8)
-        (modify-coding-system-alist 'process "*" 'utf-8)
-        (setq default-process-coding-system '(utf-8-unix . utf-8-unix)))
-    ;; GBK settings:
-    (set-language-environment 'Chinese-gbk)
-    (set-terminal-coding-system 'chinese-gbk)
-    (set-keyboard-coding-system 'chinese-gbk)
-    (set-clipboard-coding-system 'chinese-gbk)
-    (set-buffer-file-coding-system 'chinese-gbk)
-    (set-selection-coding-system 'chinese-gbk)
-    (modify-coding-system-alist 'process "*" 'chinese-gbk)
-    (setq default-process-coding-system '(chinese-gbk . chinese-gbk))))
-;;; }}}
-
-
-;;;--------------------------------------------------------------------
 ;;; === GUI/Terminal difference settings === {{{
 (if (not window-system)
     ;; --- in Terminal environment: ---
@@ -63,17 +82,6 @@
 ;;; }}}
 
 
-;; --- ELPA: Emacs Lisp Package Archive ---
-;; http://tromey.com/elpa/index.html
-;;
-(add-to-list 'load-path "~/.emacs.d/elpa")
-(load "package")
-(package-initialize)
-(setq package-archives '(("ELPA" . "http://tromey.com/elpa/")
-                         ("gnu" . "http://elpa.gnu.org/packages/")))
-
-
-;;;--------------------------------------------------------------------
 ;;; === General Settings === {{{
 
 ;; disable toolbar:
@@ -139,7 +147,7 @@
 (setq-default auto-save-mode nil)
 
 ;; kill-ring size
-(setq kill-ring-max 500)
+(setq kill-ring-max 1000)
 
 ;; turn on debug on error occurs
 ;(setq debug-on-error 1)
@@ -164,22 +172,30 @@
 
 
 ;;;--------------------------------------------------------------------
-;;; === GENERAL extensions === {{{
+;;; === General extensions === {{{
 
-;; --- ctab ---
-(require 'ctab)
-(ctab-mode t)
+;;; --- color-theme ---
+;;; http://www.nongnu.org/color-theme/
+(require 'color-theme)
+(setq color-theme-is-global t)
+(color-theme-initialize)
+(color-theme-icoder-dark)
 
-;; --- line number ---
-;; http://stud4.tuwien.ac.at/~e0225855/linum/linum.html
+;;; --- line number ---
+;;; built-in
 (require 'linum)
 (global-linum-mode t)
 (set-face-foreground 'linum "yellow")
 
-;; --- session ---
-;; http://emacs-session.sourceforge.net/
-(require 'session)
-(add-hook 'after-init-hook 'session-initialize)
+;; --- ELPA: Emacs Lisp Package Archive ---
+;; http://tromey.com/elpa/index.html
+;; http://melpa.org/
+(add-to-list 'load-path "~/.emacs.d/elpa")
+(load "package")
+(package-initialize)
+(setq package-archives '(("melpa" . "http://melpa.org/packages/")
+                         ("ELPA" . "http://tromey.com/elpa/")
+                         ("gnu" . "http://elpa.gnu.org/packages/")))
 
 ;; --- open recent file ---
 ;; http://www.emacswiki.org/emacs/RecentFiles
@@ -189,26 +205,89 @@
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 (global-set-key (kbd "<f5>") 'recentf-open-files)
 
+;; --- ctab-mode ---
+;; my ctab mode
+(require 'ctab)
+(ctab-mode t)
 
-;;; }}}
+;; --- flex and bison(yacc) mode ---
+;; get make-regexp first from here: http://web.mit.edu/majapw/OldFiles/MacData/afs/athena/software/r_v2.14.1/ess-5.14/lisp/
+;; flex-mode: http://www.emacswiki.org/emacs/FlexMode
+;; bison-mode: http://www.emacswiki.org/emacs/BisonMode
+(require 'flex-mode)
+(require 'bison-mode)
+(add-to-list 'auto-mode-alist '("\\.l\\'" . flex-mode))
+(add-to-list 'auto-mode-alist '("\\.y\\'" . bison-mode))
+
+;; --- session ---
+;; http://emacs-session.sourceforge.net/
+;; NOTE: install with ELPA(recommand):
+;;   M-x package-install [RET] session [RET]
+;; or manually install and uncomment:
+;; (require 'session)
+;; (add-hook 'after-init-hook 'session-initialize)
+
+;; --- markdown-mode ---
+;; http://jblevins.org/projects/markdown-mode/
+;; NOTE: install with ELPA(recommand):
+;;   M-x package-install [RET] markdown-mode [RET]
+;; or manually install and uncomment:
+;; (autoload 'markdown-mode "markdown-mode"
+;;   "Major mode for editing Markdown files" t)
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+
+;;; General extensions }}}
 
 
 ;;;--------------------------------------------------------------------
-;;; === Programming settings === {{{
+;;; === PROGRAMMING settings === {{{
 (setq compile-command "make -k")
 (global-set-key (kbd "<f7>") 'compile)
-
-;; --- Cscope ---
-;; http://cscope.sourceforge.net/
-;; http://www.emacswiki.org/emacs/CScopeAndEmacs
-(require 'xcscope)
 
 ;; --- CC-mode ---
 ;; http://cc-mode.sourceforge.net/
 (require 'cc-mode)
 
-;; my style
-(defconst my-programming-style
+;; --- CEDET ---
+;; http://cedet.sourceforge.net/
+;; here uses built-in cedet:
+(require 'cedet)
+(require 'semantic/bovine/gcc)
+(setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
+                                  global-semanticdb-minor-mode
+                                  global-semantic-idle-summary-mode
+                                  global-semantic-mru-bookmark-mode))
+(semantic-mode 1)
+(require 'semantic/analyze/refs)
+(defadvice push-mark (around semantic-mru-bookmark activate)
+  "Push a mark at LOCATION with NOMSG and ACTIVATE passed to `push-mark'.
+If `semantic-mru-bookmark-mode' is active, also push a tag onto
+the mru bookmark stack."
+  (semantic-mrub-push semantic-mru-bookmark-ring
+                      (point)
+                      'mark)
+  ad-do-it)
+(defun semantic-ia-fast-jump-back ()
+  (interactive)
+  (if (ring-empty-p (oref semantic-mru-bookmark-ring ring))
+      (error "Semantic Bookmark ring is currently empty"))
+  (let* ((ring (oref semantic-mru-bookmark-ring ring))
+         (alist (semantic-mrub-ring-to-assoc-list ring))
+         (first (cdr (car alist))))
+    (if (semantic-equivalent-tag-p (oref first tag) (semantic-current-tag))
+        (setq first (cdr (car (cdr alist)))))
+    (semantic-mrub-switch-tags first)))
+(defun semantic-ia-fast-jump-or-back (&optional back)
+  (interactive "P")
+  (if back
+      (semantic-ia-fast-jump-back)
+    (semantic-ia-fast-jump (point))))
+(define-key semantic-mode-map [f12] 'semantic-ia-fast-jump-or-back)
+(define-key semantic-mode-map [S-f12] 'semantic-ia-fast-jump-back)
+
+;;; --- my code-style --- {{{
+(defconst my-code-style
   '((c-tab-always-indent        . t)
     (c-comment-only-line-offset . 4)
     (c-hanging-braces-alist     . ((substatement-open after)
@@ -237,17 +316,15 @@
     (c-echo-syntactic-information-p . t))
   "My Common Programming Style")
 
-(c-add-style "my-programming" my-programming-style)
+(c-add-style "my-code-style" my-code-style)
 
 ;; my common hook
 (defun my-c-mode-common-hook ()
   ;; set my personal style for the current buffer
-  (c-set-style "my-programming")
+  (c-set-style "my-code-style")
   ;; other customizations
-  (setq tab-width 4
-        ;; this will make sure spaces are used instead of tabs
-        indent-tabs-mode nil)
-
+  ;; this will make sure spaces are used instead of tabs
+  (setq tab-width 4 indent-tabs-mode nil)
   ;; turn off auto-newline
   (c-toggle-auto-newline -1)
   ;; turn on hungry-dele
@@ -264,126 +341,79 @@
   ;(define-key c-mode-base-map [(f10)] 'gud-next)
   ;; F11: gud-step
   ;(define-key c-mode-base-map [(f11)] 'gud-step)
-
   ;; auto-complete:
   ;;(define-key c-mode-base-map (kbd "M-.") 'ac-complete-gccsense)
-
 ) ; end my-c-mode-common-hook
 
 (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 (add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.m$" . objc-mode))
 (add-to-list 'auto-mode-alist '("\\.mm$" . objc-mode))
+;;; my code-style }}}
 
+;; --- Cscope ---
+;; https://github.com/dkogan/xcscope.el
+;; https://raw.githubusercontent.com/dkogan/xcscope.el/master/xcscope.el
+(require 'xcscope)
+(cscope-setup)
+;; NOTE: to use GNU Global back-end: http://www.gnu.org/s/global/
+;;       install GNU Global and uncomment following region to enable:
+(setq cscope-program "gtags-cscope")
 
-;; --- CEDET ---
-;; http://cedet.sourceforge.net/
-;; here uses built-in cedet:
-(require 'cedet)
-(require 'semantic/bovine/gcc)
+;; --- Auto-complete ---
+;; http://auto-complete.org/
+;; https://github.com/auto-complete/auto-complete
+;; http://www.emacswiki.org/emacs/AutoComplete
+;; NOTE: install with ELPA(recommand):
+;;   M-x package-install [RET] auto-complete [RET]
 
-(setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
-                                  global-semanticdb-minor-mode
-                                  global-semantic-idle-summary-mode
-                                  global-semantic-mru-bookmark-mode))
-(semantic-mode 1)
+;; --- Go ---
+;; https://github.com/dominikh/go-mode.el
+;; http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/
+(require 'go-mode-autoloads)
+;(setenv "GOPATH" "/Users/wuxi/gocode")
+(setq exec-path (cons "/usr/local/opt/go/libexec/bin/go" exec-path))
+(add-to-list 'exec-path "/Users/wuxi/gocode/bin")
 
-(require 'semantic/analyze/refs)
-(defadvice push-mark (around semantic-mru-bookmark activate)
-  "Push a mark at LOCATION with NOMSG and ACTIVATE passed to `push-mark'.
-If `semantic-mru-bookmark-mode' is active, also push a tag onto
-the mru bookmark stack."
-  (semantic-mrub-push semantic-mru-bookmark-ring
-                      (point)
-                      'mark)
-  ad-do-it)
-(defun semantic-ia-fast-jump-back ()
-  (interactive)
-  (if (ring-empty-p (oref semantic-mru-bookmark-ring ring))
-      (error "Semantic Bookmark ring is currently empty"))
-  (let* ((ring (oref semantic-mru-bookmark-ring ring))
-         (alist (semantic-mrub-ring-to-assoc-list ring))
-         (first (cdr (car alist))))
-    (if (semantic-equivalent-tag-p (oref first tag) (semantic-current-tag))
-        (setq first (cdr (car (cdr alist)))))
-    (semantic-mrub-switch-tags first)))
-(defun semantic-ia-fast-jump-or-back (&optional back)
-  (interactive "P")
-  (if back
-      (semantic-ia-fast-jump-back)
-    (semantic-ia-fast-jump (point))))
-(define-key semantic-mode-map [f12] 'semantic-ia-fast-jump-or-back)
-(define-key semantic-mode-map [S-f12] 'semantic-ia-fast-jump-back)
+;; --- godef ---
+;; Install: $ go get code.google.com/p/rog-go/exp/cmd/godef
+(defun my-go-mode-hook ()
+  ; Call Gofmt before saving
+  ;(add-hook 'before-save-hook 'gofmt-before-save)
+  ;; (local-set-key (kbd "C-c C-j") 'godef-jump) ;; default jumb key
+  (local-set-key (kbd "C-c C-b") 'pop-tag-mark))
+(add-hook 'go-mode-hook 'my-go-mode-hook)
 
+;; --- gocode: ---
+;; Go aware Autocomplete
+;; https://github.com/nsf/gocode
+;; Depends:
+;;   auto-complete.
+;;
+;; Install:
+;;   $ go get -u github.com/nsf/gocode
+;;   $ cp $GOPATH/src/github.com/nsf/gocode/emacs/go-autocomplete.el $HOME/.emacs.d/
+;;   uncomment following:
+(require 'go-autocomplete)
+(require 'auto-complete-config)
+(ac-config-default)
 
+;; --- go-eldoc ---
+;; https://github.com/syohex/emacs-go-eldoc
+;; Depends:
+;;   go-mode
+;;   gocode
+;; Install: using package:
+;;   M-x package-install go-eldoc
+;;   and uncomment following:
+(add-hook 'go-mode-hook 'go-eldoc-setup)
 
+;; --- go oracle ---
+;; User Manual:
+;;   https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view
+;; Install:
+;;   $ go get golang.org/x/tools/cmd/oracle
+;; then uncomment:
+(load-file "/Users/wuxi/gocode/src/golang.org/x/tools/cmd/oracle/oracle.el")
 
-;;; }}}
-
-
-;; === Global key map === {{{
-
-;; Meta-g:
-(global-set-key (kbd "M-g") 'goto-line)
-
-;; window and buffer
-(global-set-key (kbd "M-`") 'other-window)
-(global-set-key (kbd "M-o") 'other-window)
-(global-set-key (kbd "M-1") 'delete-other-windows)
-(global-set-key (kbd "M-2") 'split-window-vertically)
-(global-set-key (kbd "M-3") 'split-window-horizontally)
-(global-set-key (kbd "M-0") 'kill-buffer-and-window)
-(global-set-key (kbd "M-4") '(lambda () (interactive) (kill-buffer (current-buffer))))
-(global-set-key (kbd "M-]") 'enlarge-window-horizontally)
-(global-set-key (kbd "M-6") 'enlarge-window)
-
-;; move cursor:
-(global-set-key (kbd "<end>") 'end-of-line)
-(global-set-key (kbd "<home>") 'beginning-of-line)
-(global-set-key (kbd "S-<right>") 'forward-word)
-(global-set-key (kbd "S-<left>") 'backward-word)
-(global-set-key (kbd "S-<down>") 'scroll-up)
-(global-set-key (kbd "S-<up>") 'scroll-down)
-(global-set-key (kbd "<mouse-4>") 'previous-line)
-(global-set-key (kbd "<mouse-5>") 'forward-line)
-
-;; Set mark: S-SPC, M-SPC = C-SPC
-(global-set-key (kbd "C-SPC") 'nil)
-(global-set-key (kbd "M-SPC") 'set-mark-command)
-(global-set-key (kbd "S-SPC") 'set-mark-command)
-
-
-;; for ignore ssh auto-translates [backspace] to [Ctrl-h]
-;(global-set-key [?\C-h] 'delete-backward-char)
-(global-set-key [?\C-x ?h] 'help-command)
-
-;; point-register
-(global-set-key (kbd "M-p") 'point-to-register)
-(global-set-key (kbd "C-j") 'jump-to-register)
-
-;; for puTTY:
-(global-set-key (kbd "<select>") 'end-of-line)
-
-;; for Mac
-(when (string= "ns" window-system)
-  ;; (setq mac-option-modifier nil)
-  (setq mac-option-modifier 'meta)
-  (setq mac-option-key-is-meta nil)
-  ;; (setq mac-command-key-is-meta t)
-  ;; (setq mac-command-modifier 'meta)
-  )
-
-;;; }}}
-(custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- '(safe-local-variable-values (quote ((encoding . utf-8) (encoding . gbk))))
- '(session-use-package t nil (session)))
-(custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
- )
+;;; Programming settings }}}
