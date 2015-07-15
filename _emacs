@@ -372,8 +372,8 @@ the mru bookmark stack."
 ;; http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/
 (require 'go-mode-autoloads)
 ;(setenv "GOPATH" "/Users/wuxi/gocode")
-(setq exec-path (cons "/usr/local/opt/go/libexec/bin/go" exec-path))
-(add-to-list 'exec-path "/Users/wuxi/gocode/bin")
+;(setq exec-path (cons "/usr/local/opt/go/libexec/bin/go" exec-path))
+;(add-to-list 'exec-path "/Users/wuxi/gocode/bin")
 
 ;; --- godef ---
 ;; Install: $ go get code.google.com/p/rog-go/exp/cmd/godef
@@ -414,6 +414,6 @@ the mru bookmark stack."
 ;; Install:
 ;;   $ go get golang.org/x/tools/cmd/oracle
 ;; then uncomment:
-(load-file "/Users/wuxi/gocode/src/golang.org/x/tools/cmd/oracle/oracle.el")
+(load-file "__GOPATH_1ST__/src/golang.org/x/tools/cmd/oracle/oracle.el")
 
 ;;; Programming settings }}}

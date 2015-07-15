@@ -1,4 +1,13 @@
 myel
 ====
 
-my emacs lisp programs
+ABOUT
+-----
+
+
+
+INSTALL
+-------
+
+    $ sh ./install.sh
+
