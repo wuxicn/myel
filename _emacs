@@ -84,88 +84,88 @@
 
 ;;; === General Settings === {{{
 
-;; disable toolbar:
+;;; disable toolbar:
 (setq tool-bar-mode nil)
 
-;; tab width and uses spaces instead of tab
+;;; tab width and uses spaces instead of tab
 (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80 84 88 92 96 100 104 108 112 116 120 124 128 132 136 140 144 148 152 156 160))
 (setq tab-width 4)
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 
-;; yes-no shortcuts
+;;; yes-no shortcuts
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; default input method, use C-\ to toggle input method
+;;; default input method, use C-\ to toggle input method
 (setq default-input-method 'chinese-py-punct)
 
-;; display time in mode-line:
+;;; display time in mode-line:
 ;(display-time-mode 1)
 ;(setq display-time-23hr-format t)
 ;(setq display-time-day-and-date t)
 
-;; visible-bell
+;;; visible-bell
 ;(setq visible-bell t)
 
-;; turn on mouse in xterm
+;;; turn on mouse in xterm
 (xterm-mouse-mode t)
 
-;; enable mouse wheel
+;;; enable mouse wheel
 (mouse-wheel-mode t)
 
-;; show uesless tailing whitespaces:
+;;; show uesless tailing whitespaces:
 (setq-default show-trailing-whitespace t)
 
-;; display line num and column num
+;;; display line num and column num
 (column-number-mode t)
 (line-number-mode t)
 
-;; display image
+;;; display image
 (auto-image-file-mode 1)
 
-;; scroll margin
+;;; scroll margin
 (setq scroll-step 1
       scroll-margin 7
       scroll-conservatively 10000)
 
-;; don't blink
+;;; don't blink
 (blink-cursor-mode 0)
 
-;; highlight selection region
+;;; highlight selection region
 (transient-mark-mode t)
 
-;; inhibit startup message:
+;;; inhibit startup message:
 (setq inhibit-startup-message t)
 
-;; show parenthesis:
+;;; show parenthesis:
 (show-paren-mode 1)
 
-;; disable backup
+;;; disable backup
 (setq-default make-backup-files nil)
 
-;; turn off auto-save-mode
+;;; turn off auto-save-mode
 (setq-default auto-save-mode nil)
 
-;; kill-ring size
+;;; kill-ring size
 (setq kill-ring-max 1000)
 
-;; turn on debug on error occurs
+;;; turn on debug on error occurs
 ;(setq debug-on-error 1)
 
-;; uses the system clipboard
+;;; uses the system clipboard
 (setq x-select-enable-clipboard t)
 
-;; frame title
+;;; frame title
 (setq frame-title-format "%b - Emacs")
 
-;; show equivalent key-binding for a command
+;;; show equivalent key-binding for a command
 (setq suggest-key-bindings 1)
 
-;; syntax highlighting
+;;; syntax highlighting
 (global-font-lock-mode 1)
 (setq font-lock-maximum-decoration t)
 
-;; Disable Version Control
+;;; Disable Version Control
 (setq vc-handled-backends nil)
 
 ;;; }}}
@@ -187,9 +187,9 @@
 (global-linum-mode t)
 (set-face-foreground 'linum "yellow")
 
-;; --- ELPA: Emacs Lisp Package Archive ---
-;; http://tromey.com/elpa/index.html
-;; http://melpa.org/
+;;; --- ELPA: Emacs Lisp Package Archive ---
+;;; http://tromey.com/elpa/index.html
+;;; http://melpa.org/
 (add-to-list 'load-path "~/.emacs.d/elpa")
 (load "package")
 (package-initialize)
@@ -197,43 +197,43 @@
                          ("ELPA" . "http://tromey.com/elpa/")
                          ("gnu" . "http://elpa.gnu.org/packages/")))
 
-;; --- open recent file ---
-;; http://www.emacswiki.org/emacs/RecentFiles
+;;; --- open recent file ---
+;;; http://www.emacswiki.org/emacs/RecentFiles
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 10)
 (global-set-key (kbd "C-x C-r") 'recentf-open-files)
 (global-set-key (kbd "<f5>") 'recentf-open-files)
 
-;; --- ctab-mode ---
-;; my ctab mode
+;;; --- ctab-mode ---
+;;; my ctab mode
 (require 'ctab)
 (ctab-mode t)
 
-;; --- flex and bison(yacc) mode ---
-;; get make-regexp first from here: http://web.mit.edu/majapw/OldFiles/MacData/afs/athena/software/r_v2.14.1/ess-5.14/lisp/
-;; flex-mode: http://www.emacswiki.org/emacs/FlexMode
-;; bison-mode: http://www.emacswiki.org/emacs/BisonMode
+;;; --- flex and bison(yacc) mode ---
+;;; get make-regexp first from here: http://web.mit.edu/majapw/OldFiles/MacData/afs/athena/software/r_v2.14.1/ess-5.14/lisp/
+;;; flex-mode: http://www.emacswiki.org/emacs/FlexMode
+;;; bison-mode: http://www.emacswiki.org/emacs/BisonMode
 (require 'flex-mode)
 (require 'bison-mode)
 (add-to-list 'auto-mode-alist '("\\.l\\'" . flex-mode))
 (add-to-list 'auto-mode-alist '("\\.y\\'" . bison-mode))
 
-;; --- session ---
-;; http://emacs-session.sourceforge.net/
-;; NOTE: install with ELPA(recommand):
-;;   M-x package-install [RET] session [RET]
-;; or manually install and uncomment:
-;; (require 'session)
-;; (add-hook 'after-init-hook 'session-initialize)
+;;; --- session ---
+;;; http://emacs-session.sourceforge.net/
+;;; NOTE: install with ELPA(recommand):
+;;;   M-x package-install [RET] session [RET]
+;;; or manually install and uncomment:
+;;; (require 'session)
+;;; (add-hook 'after-init-hook 'session-initialize)
 
-;; --- markdown-mode ---
-;; http://jblevins.org/projects/markdown-mode/
-;; NOTE: install with ELPA(recommand):
-;;   M-x package-install [RET] markdown-mode [RET]
-;; or manually install and uncomment:
-;; (autoload 'markdown-mode "markdown-mode"
-;;   "Major mode for editing Markdown files" t)
+;;; --- markdown-mode ---
+;;; http://jblevins.org/projects/markdown-mode/
+;;; NOTE: install with ELPA(recommand):
+;;;   M-x package-install [RET] markdown-mode [RET]
+;;; or manually install and uncomment:
+;;; (autoload 'markdown-mode "markdown-mode"
+;;;   "Major mode for editing Markdown files" t)
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
@@ -245,13 +245,13 @@
 (setq compile-command "make -k")
 (global-set-key (kbd "<f7>") 'compile)
 
-;; --- CC-mode ---
-;; http://cc-mode.sourceforge.net/
+;;; --- CC-mode ---
+;;; http://cc-mode.sourceforge.net/
 (require 'cc-mode)
 
-;; --- CEDET ---
-;; http://cedet.sourceforge.net/
-;; here uses built-in cedet:
+;;; --- CEDET ---
+;;; http://cedet.sourceforge.net/
+;;; here uses built-in cedet:
 (require 'cedet)
 (require 'semantic/bovine/gcc)
 (setq semantic-default-submodes '(global-semantic-idle-scheduler-mode
@@ -318,30 +318,30 @@ the mru bookmark stack."
 
 (c-add-style "my-code-style" my-code-style)
 
-;; my common hook
+;;; my common hook
 (defun my-c-mode-common-hook ()
-  ;; set my personal style for the current buffer
+  ;;; set my personal style for the current buffer
   (c-set-style "my-code-style")
-  ;; other customizations
-  ;; this will make sure spaces are used instead of tabs
+  ;;; other customizations
+  ;;; this will make sure spaces are used instead of tabs
   (setq tab-width 4 indent-tabs-mode nil)
-  ;; turn off auto-newline
+  ;;; turn off auto-newline
   (c-toggle-auto-newline -1)
-  ;; turn on hungry-dele
+  ;;; turn on hungry-dele
   (c-toggle-hungry-state 1)
-  ;; ctrl+`: fold
+  ;;; ctrl+`: fold
   (define-key c-mode-base-map (kbd "C-\`") 'hs-toggle-hiding)
-  ;; indent when type new line
+  ;;; indent when type new line
   (define-key c-mode-base-map (kbd "<RET>") 'newline-and-indent)
-  ;; F7: compile
+  ;;; F7: compile
   (define-key c-mode-base-map (kbd "<f7>") 'compile)
-  ;; F9: continue: gud-cont
+  ;;; F9: continue: gud-cont
   ;(define-key c-mode-base-map [(f9)] 'gud-cont)
-  ;; F10: gud-next
+  ;;; F10: gud-next
   ;(define-key c-mode-base-map [(f10)] 'gud-next)
-  ;; F11: gud-step
+  ;;; F11: gud-step
   ;(define-key c-mode-base-map [(f11)] 'gud-step)
-  ;; auto-complete:
+  ;;; auto-complete:
   ;;(define-key c-mode-base-map (kbd "M-.") 'ac-complete-gccsense)
 ) ; end my-c-mode-common-hook
 
@@ -351,32 +351,32 @@ the mru bookmark stack."
 (add-to-list 'auto-mode-alist '("\\.mm$" . objc-mode))
 ;;; my code-style }}}
 
-;; --- Cscope ---
-;; https://github.com/dkogan/xcscope.el
-;; https://raw.githubusercontent.com/dkogan/xcscope.el/master/xcscope.el
+;;; --- Cscope ---
+;;; https://github.com/dkogan/xcscope.el
+;;; https://raw.githubusercontent.com/dkogan/xcscope.el/master/xcscope.el
 (require 'xcscope)
 (cscope-setup)
-;; NOTE: to use GNU Global back-end: http://www.gnu.org/s/global/
-;;       install GNU Global and uncomment following region to enable:
+;;; NOTE: to use GNU Global back-end: http://www.gnu.org/s/global/
+;;;       install GNU Global and uncomment following region to enable:
 (setq cscope-program "gtags-cscope")
 
-;; --- Auto-complete ---
-;; http://auto-complete.org/
-;; https://github.com/auto-complete/auto-complete
-;; http://www.emacswiki.org/emacs/AutoComplete
-;; NOTE: install with ELPA(recommand):
-;;   M-x package-install [RET] auto-complete [RET]
+;;; --- Auto-complete ---
+;;; http://auto-complete.org/
+;;; https://github.com/auto-complete/auto-complete
+;;; http://www.emacswiki.org/emacs/AutoComplete
+;;; NOTE: install with ELPA(recommand):
+;;;   M-x package-install [RET] auto-complete [RET]
 
-;; --- Go ---
-;; https://github.com/dominikh/go-mode.el
-;; http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/
+;;; --- Go ---
+;;; https://github.com/dominikh/go-mode.el
+;;; http://tleyden.github.io/blog/2014/05/22/configure-emacs-as-a-go-editor-from-scratch/
 (require 'go-mode-autoloads)
 ;(setenv "GOPATH" "/Users/wuxi/gocode")
 ;(setq exec-path (cons "/usr/local/opt/go/libexec/bin/go" exec-path))
 ;(add-to-list 'exec-path "/Users/wuxi/gocode/bin")
 
-;; --- godef ---
-;; Install: $ go get code.google.com/p/rog-go/exp/cmd/godef
+;;; --- godef ---
+;;; Install: $ go get code.google.com/p/rog-go/exp/cmd/godef
 (defun my-go-mode-hook ()
   ; Call Gofmt before saving
   ;(add-hook 'before-save-hook 'gofmt-before-save)
@@ -384,36 +384,36 @@ the mru bookmark stack."
   (local-set-key (kbd "C-c C-b") 'pop-tag-mark))
 (add-hook 'go-mode-hook 'my-go-mode-hook)
 
-;; --- gocode: ---
-;; Go aware Autocomplete
-;; https://github.com/nsf/gocode
-;; Depends:
-;;   auto-complete.
+;;; --- gocode: ---
+;;; Go aware Autocomplete
+;;; https://github.com/nsf/gocode
+;;; Depends:
+;;;   auto-complete.
 ;;
-;; Install:
-;;   $ go get -u github.com/nsf/gocode
-;;   $ cp $GOPATH/src/github.com/nsf/gocode/emacs/go-autocomplete.el $HOME/.emacs.d/
-;;   uncomment following:
-(require 'go-autocomplete)
-(require 'auto-complete-config)
-(ac-config-default)
+;;; Install:
+;;;   $ go get -u github.com/nsf/gocode
+;;;   $ cp $GOPATH/src/github.com/nsf/gocode/emacs/go-autocomplete.el $HOME/.emacs.d/
+;;;   uncomment following:
+;;(require 'go-autocomplete)
+;;(require 'auto-complete-config)
+;;(ac-config-default)
 
-;; --- go-eldoc ---
-;; https://github.com/syohex/emacs-go-eldoc
-;; Depends:
-;;   go-mode
-;;   gocode
-;; Install: using package:
-;;   M-x package-install go-eldoc
-;;   and uncomment following:
+;;; --- go-eldoc ---
+;;; https://github.com/syohex/emacs-go-eldoc
+;;; Depends:
+;;;   go-mode
+;;;   gocode
+;;; Install: using package:
+;;;   M-x package-install go-eldoc
+;;;   and uncomment following:
 (add-hook 'go-mode-hook 'go-eldoc-setup)
 
-;; --- go oracle ---
-;; User Manual:
-;;   https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view
-;; Install:
-;;   $ go get golang.org/x/tools/cmd/oracle
-;; then uncomment:
+;;; --- go oracle ---
+;;; User Manual:
+;;;   https://docs.google.com/document/d/1SLk36YRjjMgKqe490mSRzOPYEDe0Y_WQNRv-EiFYUyw/view
+;;; Install:
+;;;   $ go get golang.org/x/tools/cmd/oracle
+;;; then uncomment:
 (load-file "__GOPATH_1ST__/src/golang.org/x/tools/cmd/oracle/oracle.el")
 
 ;;; Programming settings }}}

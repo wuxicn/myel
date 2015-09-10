@@ -1,7 +1,7 @@
 ;; File: color-theme-icoder-dark.el
 ;; Revision 1
 ;;
-;; Copyright (C) 2010 Wu Xi http://icoder.me/
+;; Copyright (C) 2015 Wu Xi http://github.com/wuxicn
 ;;
 ;; Permission is hereby granted, free of charge, to any person
 ;; obtaining a copy of this software and associated documentation
@@ -30,7 +30,7 @@
   "iCoder color theme for Emacs by Wu Xi."
   (interactive)
   (color-theme-install
-   '(color-theme-gruber-darker
+   '(color-theme-icoder-dark
      ((foreground-color . "#b2b2b2")
       (background-color . "#000000")
       (background-mode . dark)
@@ -56,6 +56,8 @@
      (font-lock-reference-face ((t (:foreground "#95a99f"))))
      (trailing-whitespace ((t (:foreground "white" :background "grey12"))))
      (link ((t (:foreground "steelblue" :underline t))))
+     (highlight ((t (:foreground "orange" :background "grey50"))))
+
 
      ;; Compilation
      (compilation-warning ((t (:foreground "orange"))))
@@ -90,6 +92,10 @@
      ;; Info
      ;(info-xref ((t (:foreground "#96a6c8"))))
      ;(info-visited ((t (:foreground "#9e95c7"))))
+
+     ;; for xcscope:
+     (cscope-file-face ((t (:foreground "#005faf"))))
+     (cscope-function-face ((t (:foreground "darkgoldenrod"))))
      )))
 
 (provide 'color-theme-icoder-dark)
