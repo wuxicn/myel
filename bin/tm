@@ -1,0 +1,12 @@
+#!/bin/sh
+
+TMUX=/usr/bin/tmux
+
+if [ $# -eq 0 ]; then
+  $TMUX list-sessions
+  exit 0
+fi
+
+SNAME=$1
+
+tmux new-session -A -s $SNAME
